@@ -4,6 +4,8 @@ module Functions.InfixOperations
 ,infCCheck
 ,infVCheck
 
+
+
 ,(.+)
 ,(.-)
 ,(.*)
@@ -13,8 +15,36 @@ module Functions.InfixOperations
 
 
 import Functions.Test.Func          (testNum)
-import Functions.Assets             (makeBlock, checkBlock)
+--import Functions.Assets             (makeBlock, checkBlock)
+--import Functions.FunctionMaps
 
+makeBlock :: String -> String
+makeBlock str = "(" ++ str ++ ")"
+
+
+
+checkBlock :: String -> Bool
+checkBlock str | (head str) == '(' && (last str) == ')'  = True
+               | otherwise = False
+
+
+truncParens :: String -> String
+truncParens str | (length str - 2 > 0) = init $ tail str
+                | otherwise = str
+
+checkBlock' :: [String] -> Bool
+checkBlock' (x : [])  | isConstant x || isConstant x || isFunction x = True
+                    | otherwise = False
+checkBlock' (x0 : x1 : x2 : xs) | all (==True) $ map (checkBlock' $ words . truncParens) strBody = True   --Check if it's "()"            
+                                | otherwise = False
+                                    where strBody = unwords x0:x1:x2:xs
+
+--checkBlock :: String -> Bool 
+--checkBlock str = checkBlock' $ words $ truncParens str
+
+
+isFunction :: String -> Bool
+isFunction s = isFMKeys s InfixFunctionMap
 
 isConstant :: String -> Bool
 isConstant a | testNum a = True

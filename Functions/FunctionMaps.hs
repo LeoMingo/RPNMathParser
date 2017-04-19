@@ -2,6 +2,7 @@ module Functions.FunctionMaps
 (getFMKeys
 ,getFMVals
 ,infixFunctionMap
+,isFMKeys
 ) where
 
 
@@ -17,6 +18,8 @@ getFMKeys fm = [fst pair | pair <- fm]
 getFMVals :: [(a,b)] -> [b]
 getFMVals fm = [snd pair | pair <- fm]
 
+isFMKeys :: String -> [(a,b)] -> Bool
+isFMKeys str fm = elem str $ getFMKeys fm
 
 
 
